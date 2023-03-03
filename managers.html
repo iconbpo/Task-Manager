@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+                <meta charset="UTF-8" />
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>ICON BPO Task Manager - Managers</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        </head>
+        <body>
+                <nav class="navbar" style="background-color: #004370;">
+                        <a class="navbar-brand" href="index.html">
+                                <img
+                                        src="./assets/icon logo.png"
+                                        width="30"
+                                        height="30"
+                                        class="d-inline-block align-top"
+                                        alt=""
+                                />
+                                Home:
+                        </a>
+                        <a class="navbar-brand mb-1">ICON BPO Task Manager</a>
+                        <a class="navbar-brand mb-1" href="info.html">Information:</a>
+                </nav>
+                <div class="container">
+                        <center><h1>Managers</h1></center>
+                        <p id="currentUser"></p>
+                        <button id="logout" class="btn btn-outline-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                                      </svg>        Logout
+                        </button>
+                        <button id="modificarperfil" class="btn btn-secondary">
+                                Profile Settings
+                        </button>
+                        <button id="hacertask" class="btn btn-warning">
+                                Create Task
+                        </button>
+                        <button id="taskreport" class="btn btn-success">Task Report</button>
+                        <button id="taskreport2" class="btn btn-danger">Task Report Assigned</button>
+                        <button id="refresh" class="btn btn-info">
+                                Refresh
+                        </button>
+                        <h3 id="taskscontadas">Assigned Tasks:</h3>
+                        <div class="m-2">
+                        <div class="d-flex flex-column" id="tasks"></div>
+                        <br>
+                        <h3 id="taskscontadas2">Tasks:</h3>
+                        <div class="m-2">
+                        <div class="d-flex flex-column" id="tasks2"></div>
+                </div>
+                <script>
+                        //getting URL parameters
+                        const queryStrings = window.location.search;
+                        const urlParams = new URLSearchParams(queryStrings);
+                        const firstName = urlParams.get("first_name");
+                        const lastName = urlParams.get("last_name");
+                        const date = urlParams.get("date");
+                        const gender = urlParams.get("gender");
+                        const nickname = urlParams.get("nickname");
+                        const password = urlParams.get("password");
+                        const manager_name =urlParams.get('manager_name')
+                        const typeUser = urlParams.get("typeUser");
+
+
+
+                        //Profile Settings
+                        modificarperfil.addEventListener("click", (e) => {
+                                let params = `first_name=${firstName}`;
+                                params += `&last_name=${lastName}`;
+                                params += `&date=${date}`;
+                                params += `&gender=${gender}`;
+                                params += `&nickname=${nickname}`;
+                                params += `&password=${password}`;
+                                params += `&manager_name=${manager_name}`;
+                                params += `&typeUser=${typeUser}`;
+                                window.location = "modificarmanager.html?" + params;
+                        });
+
+                        //Task Report
+                        taskreport.addEventListener("click", (e) => {
+                                let params = `first_name=${firstName}`;
+                                params += `&last_name=${lastName}`;
+                                params += `&date=${date}`;
+                                params += `&gender=${gender}`;
+                                params += `&nickname=${nickname}`;
+                                params += `&password=${password}`;
+                                params += `&manager_name=${manager_name}`;
+                                params += `&typeUser=${typeUser}`;
+                                window.location = "reportTaskManager.html?" + params;
+                        });
+                        
+                        //Task Report Assigned
+                        taskreport2.addEventListener("click", (e) => {
+                                let params = `first_name=${firstName}`;
+                                params += `&last_name=${lastName}`;
+                                params += `&date=${date}`;
+                                params += `&gender=${gender}`;
+                                params += `&nickname=${nickname}`;
+                                params += `&password=${password}`;
+                                params += `&manager_name=${manager_name}`;
+                                params += `&typeUser=${typeUser}`;
+                                window.location = "reportTaskManagerAssigned.html?" + params;
+                        });
+
+
+                        // Refresh button
+                        refresh.addEventListener("click", (e) => {
+                                window.location.reload()
+                        });
+
+                        // logout button
+                        logout.addEventListener("click", (e) => {
+                                window.location = "index.html"
+                                });
+
+                        //Create Task
+                        hacertask.addEventListener("click", (e) => {
+                                let params = `first_name=${firstName}`;
+                                params += `&last_name=${lastName}`;
+                                params += `&date=${date}`;
+                                params += `&gender=${gender}`;
+                                params += `&nickname=${nickname}`;
+                                params += `&password=${password}`;
+                                params += `&manager_name=${manager_name}`;
+                                params += `&typeUser=${typeUser}`;
+                                window.location = "task manager.html?" + params;
+                        });
+
+ 
+                        //getting inputs
+                        let currentUser = document.getElementById("currentUser");
+                        currentUser.innerText = `Welcome ${firstName} ${lastName}!`;
+
+                        //contador tasks
+                        let contador1 = 0;
+                        let contador2 = 0;    
+                        let contador3 = 0;
+                        let contador4 = 0;                     
+ 
+                        //getting tasks
+                        getTasks();
+                        function getTasks() {
+                                
+                                fetch("https://icontaskmanager.pagekite.me:443/task")
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                                tasks.innerHTML = "";
+                                                tasks2.innerHTML = "";
+                                                data.forEach((task) => {
+                                                        if (task.estado == 'Pending' && task.worker_nickname == nickname){
+                                                                contador1++;
+                                                        }
+                                                        if (task.estado == 'In Progress' && task.worker_nickname == nickname){
+                                                                contador2++;
+                                                        }
+                                                        if (task.estado == 'Pending' && task.manager_name == nickname){
+                                                                contador3++;
+                                                        }
+                                                        if (task.estado == 'In Progress' && task.manager_name == nickname){
+                                                                contador4++;
+                                                        }
+                                                        taskscontadas.innerText = "Assigned Tasks | " + "Tasks Pending: " + contador1 + " Tasks In Progress: " + contador2;
+                                                        taskscontadas2.innerText = "Tasks for Workers | " + "Tasks Pending: " + contador3 + " Tasks In Progress: " + contador4;
+                                                        if (task.manager_name == nickname && task.worker_nickname!= nickname && (task.estado !='') ){
+                                                        let card2 = document.createElement("div");
+                                                        card2.className = "card m-2";
+                                                        card2.id = task.manager_name;
+                                                        let cardHeader = document.createElement("div");
+                                                        cardHeader.className = "card-header";
+                                                        let cardBody2 = document.createElement("div");
+                                                        cardBody2.className = "card-body";
+
+                //getting workers
+                getWorkers2();                  
+                        function getWorkers2() {
+                                fetch("https://icontaskmanager.pagekite.me:443/worker")
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                                data.forEach((worker) => {
+                                                        if (worker.nickname == task.worker_nickname && nickname == task.manager_name){
+                                                                let workerTask = document.createElement("h4");
+                                                                workerTask.className = "card-title";
+                                                                workerTask.innerText = "Worker Name: " + worker.first_name + " " + worker.last_name;                                            
+                                                                cardHeader.appendChild(workerTask);   
+                                                        }
+                                                });
+                                        })
+                                        .catch((error) => console.error(error));
+                        }
+                        getManagers();                  
+                        function getManagers() {
+                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                                data.forEach((manager) => {
+                                                        if (manager.nickname == task.worker_nickname ){
+                                                                let managerTask = document.createElement("h4");
+                                                                managerTask.className = "card-title";
+                                                                managerTask.innerText = "Manager Name: " + manager.first_name + " " + manager.last_name;                                            
+                                                                cardHeader.appendChild(managerTask);   
+                                                        }
+                                                });
+                                        })
+                                        .catch((error) => console.error(error));
+                        }                          
+                        
+
+                                                                let estadoTask = document.createElement("h5");
+                                                                estadoTask.innerText = "Status: " + task.estado;
+                                                                if (task.estado == 'Pending'){
+                                                                cardBody2.style.backgroundColor = "#ffffbf"
+                                                        }else if(task.estado == 'In Progress'){
+                                                                cardBody2.style.backgroundColor = "#e69138"    
+                                                        }else if(task.estado == 'Completed'){ 
+                                                                cardBody2.style.backgroundColor = "#8fce00"    
+                                                        } else if(task.estado == 'Out Of Date'){   
+                                                                cardBody2.style.backgroundColor = "#f44336"  
+                                                        }              
+                                                                let timeinTask = document.createElement("h5");
+                                                                timeinTask.className = "card-subtitle";
+                                                                timeinTask.innerText = " Time In Task: " + task.timein;
+                                                                let timeoutTask = document.createElement("h5");
+                                                                timeoutTask.innerText = " Time Out Task: " + task.timeout;
+                                                                let fechaTask = document.createElement("h5");
+                                                                fechaTask.innerText = "Task Date: " + task.date;
+                                                                let fecha2Task = document.createElement("h5");
+                                                                fecha2Task.innerText = "Task Out of Date: " + task.outofdate;
+                                                                let motivoTask = document.createElement("h5");
+                                                                motivoTask.innerText = "Task Details: " + task.details;
+                                                                let notaTask = document.createElement("h5");
+                                                                notaTask.innerText = "Agent Note: " + task.note;
+                                                                cardBody2.appendChild(estadoTask);
+                                                                cardBody2.appendChild(timeinTask);
+                                                                cardBody2.appendChild(timeoutTask);
+                                                                cardBody2.appendChild(fechaTask);
+                                                                cardBody2.appendChild(fecha2Task);
+                                                                cardBody2.appendChild(motivoTask);
+                                                                cardBody2.appendChild(notaTask);
+                                                                card2.appendChild(cardHeader);
+                                                                card2.appendChild(cardBody2);
+                                                                tasks2.appendChild(card2);
+
+                                                        } 
+
+                                                        
+                                                if (task.worker_nickname == nickname && (task.estado == 'Pending' ||  task.estado == 'In Progress')){
+                                                        let card = document.createElement("div");
+                                                        card.className = "card m-2";
+                                                        card.id = task.worker_nickname;
+                                                        let cardBody = document.createElement("div");
+                                                        cardBody.className = "card-body";
+                                                        let taskEstado = document.createElement("h5");
+                                                        taskEstado.className = "card-title";
+                                                        taskEstado.innerText = "Status: " + task.estado;
+                                                        let taskFecha = document.createElement("h5");
+                                                        taskFecha.innerText = "Task Date: " + task.date;
+                                                        let taskFecha2 = document.createElement("h5");
+                                                        taskFecha2.innerText = "Task Out of Date: " + task.outofdate;
+                                                        let taskMotivo = document.createElement("h5");
+                                                        taskMotivo.innerText = "Task Details: " + task.details;
+                                                        let timein = document.createElement("BUTTON");
+                                                        timein.className = "btn btn-primary btn-lg active";
+                                                        timein.innerText = "TIME IN:"
+                                                        let timeout = document.createElement("BUTTON");
+                                                        timeout.className = "btn btn-secondary btn-lg active";
+                                                        timeout.innerText = "TIME OUT:"
+                                                        timeout.disabled = true;
+                                                        
+                                                        let cardBody2 = document.createElement("div");
+                                                        let taskNote = document.createElement("TEXTAREA");
+                                                        taskNote.setAttribute('cols', 25);
+                                                        taskNote.setAttribute('rows', 12);
+                                                        taskNote.placeholder ='Please insert your note before to TIMEOUT your task'
+                                                        let taskCompleted = document.createElement("BUTTON");
+                                                        taskCompleted.className = "btn btn-success";
+                                                        taskCompleted.innerText = "Complete TASK:"
+                                                        cardBody.appendChild(taskEstado);
+                                                        cardBody.appendChild(taskFecha);
+                                                        cardBody.appendChild(taskFecha2);                                                       
+                                                        cardBody.appendChild(taskMotivo);
+                                                        cardBody.appendChild(timein);
+                                                        cardBody.appendChild(timeout);
+                                                        cardBody2.appendChild(taskCompleted);
+                                                        cardBody2.appendChild(taskNote);
+                                                        card.appendChild(cardBody);
+                                                        card.appendChild(cardBody2);
+                                                        tasks.appendChild(card);
+
+                                                        if (task.timein =='' && task.timeout==''){
+                                                                timein.disabled = false;
+                                                                timeout.disabled = true;
+                                                                taskCompleted.hidden = true;
+                                                                taskNote.hidden = true;
+
+                                                        }else if (task.timein !='' && task.timeout !=''){
+                                                                timein.disabled = true;
+                                                                timeout.disabled = true;                                                             
+                                                                taskCompleted.hidden = false;
+                                                                taskNote.hidden = false;
+                                                        }else if (task.timein !='' && task.timeout ==''){
+                                                                timein.disabled = true;
+                                                                timeout.disabled = false;                                                             
+                                                                taskCompleted.hidden = true;
+                                                                taskNote.hidden = true;
+                                                        }
+                                                        // funcion para el tiempo
+                                                        function showTime(){
+                                                        var now=new Date();
+                                                         var minutes = now.getMinutes();
+                                                         var hour = now.getHours();
+                                                         return hour+':'+minutes
+                                                        }
+                                                        timein.addEventListener("click", () => {
+                                                        // Caja de texto para la nota despues del timein
+                                                         timeinhour = showTime();
+                                                        const timeinTask = {
+                                                                                worker_nickname: task.worker_nickname,
+                                                                                timein: timeinhour,
+                                                                                timeout: "",
+                                                                                date: task.date,
+                                                                                outofdate: task.outofdate,
+                                                                                details: task.details,
+                                                                                estado: "In Progress",
+                                                                                manager_name: task.manager_name,
+                                                                                note: '',
+                                                                        };
+                                                                        console.log(timeinTask);
+                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                                method: "PUT",
+                                                                                headers: {
+                                                                                        "content-type": "application/json",
+                                                                                },
+                                                                                body: JSON.stringify(timeinTask),
+                                                                        })
+                                                                                .then((response) => response.json())
+                                                                                .then((data) => {
+                                                                                        if (data.message) {
+                                                                                                alert("Time IN for your task")
+                                                                                                let params = `first_name=${firstName}`;
+                                                                                                params += `&last_name=${lastName}`;
+                                                                                                params += `&date=${date}`;
+                                                                                                params += `&gender=${gender}`;
+                                                                                                params += `&nickname=${nickname}`;
+                                                                                                params += `&password=${password}`;
+                                                                                                params += `&manager_name=${manager_name}`;
+                                                                                                params += `&typeUser=${typeUser}`;
+                                                                                                window.location = "managers.html?" + params;
+                                                                                        } else {
+                                                                                                console.error(data);
+                                                                                                alert("Error to time in your task");
+                                                                                        }
+                                                                                })
+                                                                                .catch((error) => console.error(error));
+                                                                                timein.disabled = true;
+                                                                                timeout.disabled = false;                                                        
+                                                        });
+                                                        
+                                                        timeout.addEventListener("click", () => {
+                                                        timeouthour = showTime();
+                                                        const timeoutTask = {
+                                                                                worker_nickname: task.worker_nickname,
+                                                                                timein: task.timein,
+                                                                                timeout: timeouthour,
+                                                                                date: task.date,
+                                                                                outofdate: task.outofdate,
+                                                                                details: task.details,
+                                                                                estado: "In Progress",
+                                                                                manager_name: task.manager_name ,
+                                                                                note: '' ,
+                                                                        };
+                                                                        console.log(timeoutTask);
+                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                                method: "PUT",
+                                                                                headers: {
+                                                                                        "content-type": "application/json",
+                                                                                },
+                                                                                body: JSON.stringify(timeoutTask),
+                                                                        })
+                                                                                .then((response) => response.json())
+                                                                                .then((data) => {
+                                                                                        if (data.message) {
+                                                                                                alert("Timeout for your task");
+                                                                                                let params = `first_name=${firstName}`;
+                                                                                                params += `&last_name=${lastName}`;
+                                                                                                params += `&date=${date}`;
+                                                                                                params += `&gender=${gender}`;
+                                                                                                params += `&nickname=${nickname}`;
+                                                                                                params += `&password=${password}`;
+                                                                                                params += `&manager_name=${manager_name}`;
+                                                                                                params += `&typeUser=${typeUser}`;
+                                                                                                window.location = "managers.html?" + params;
+                                                                                        } else {
+                                                                                                console.error(data);
+                                                                                                alert("Error to time out your task");
+                                                                                        }
+                                                                                })
+                                                                                .catch((error) => console.error(error));
+                                                        });
+
+                                                        taskCompleted.addEventListener("click", () => {
+                                                        if (taskNote.value != ''){
+                                                                const completedTask = {
+                                                                                worker_nickname: task.worker_nickname,
+                                                                                timein: task.timein,
+                                                                                timeout: task.timeout,
+                                                                                date: task.date,
+                                                                                outofdate: task.outofdate,
+                                                                                details: task.details,
+                                                                                estado: "Completed",
+                                                                                manager_name: task.manager_name ,
+                                                                                note: taskNote.value ,
+                                                                        };
+                                                                        console.log(completedTask);
+                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                                method: "PUT",
+                                                                                headers: {
+                                                                                        "content-type": "application/json",
+                                                                                },
+                                                                                body: JSON.stringify(completedTask),
+                                                                        })
+                                                                                .then((response) => response.json())
+                                                                                .then((data) => {
+                                                                                        if (data.message) {
+                                                                                                alert("Task Completed");
+                                                                                                let params = `first_name=${firstName}`;
+                                                                                                params += `&last_name=${lastName}`;
+                                                                                                params += `&date=${date}`;
+                                                                                                params += `&gender=${gender}`;
+                                                                                                params += `&nickname=${nickname}`;
+                                                                                                params += `&password=${password}`;
+                                                                                                params += `&manager_name=${manager_name}`;
+                                                                                                params += `&typeUser=${typeUser}`;
+                                                                                                window.location = "managers.html?" + params;
+                                                                                        } else {
+                                                                                                console.error(data);
+                                                                                                alert("Error to complete your task");
+                                                                                        }
+                                                                                })
+                                                                                .catch((error) => console.error(error)); 
+
+                                                        }else {
+                                                                        alert("Please fill your note so you can completed your task");
+                                                                }                                                      
+                                                        });  
+                                                        }
+
+
+
+                                                });
+                                        })
+                                        .catch((error) => console.error(error));
+                        }
+                </script>
+                <script
+                        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                        crossorigin="anonymous"
+                ></script>
+                <script
+                        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                        crossorigin="anonymous"
+                ></script>
+                <script
+                        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                        crossorigin="anonymous"
+                ></script>
+        </body>
+</html>

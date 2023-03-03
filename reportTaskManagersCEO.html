@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+                <meta charset="UTF-8" />
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>ICON BPO Task Manager </title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        </head>
+        <body>
+                <nav class="navbar" style="background-color: #ffffff;">
+                        <a class="navbar-brand" href="index.html">
+                                <img
+                                        src="./assets/icon logo.png"
+                                        width="30"
+                                        height="30"
+                                        class="d-inline-block align-top"
+                                        alt=""
+                                />
+                                Home:
+                        </a>
+                        <a class="navbar-brand mb-1">ICON BPO Task Manager</a>
+                        <a class="navbar-brand mb-1" href="info.html">Information:</a>
+                </nav>
+                <div class="container">
+                        <div class="col">
+                                <h1 class="text-center mb-5">Task Report CEO for Managers:</h1>
+                                <form id="taskForm">
+                                        <div class="form-group">
+                                                <label for="lgenders">Choose Task Status: </label>
+                                        <select name="Status" id="status">
+                                                <option value="Pending">Pending</option>
+                                                <option value="In Progress">In Progress</option>
+                                                <option value="Completed">Completed</option>
+                                                <option value="Out Of Date">Out Of Date</option>
+                                              </select>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for="taskFecha">Task Date:</label>
+                                                <input
+                                                        type="date"
+                                                        class="form-control"
+                                                        id="taskFecha"
+                                                        placeholder="Please enter date for your task"
+                                                />
+                                        </div>
+                                        <div class="form-group">
+                                                <label for="taskFecha2">Task End Date:</label>
+                                                <input
+                                                        type="date"
+                                                        class="form-control"
+                                                        id="taskFecha2"
+                                                        placeholder="Please enter end date for your task"
+                                                />
+                                        </div>
+                                        <br>  
+                                        <div class="form-group">
+                                                <label for="lmanagers">Select a Manager:</label>
+                                                <select  id="managers">
+                                                </select>
+                                        </div>
+                                        <br>
+                                        <button
+                                                id="searchButton"
+                                                type="submit"
+                                                class="btn btn-primary w-100"
+                                        >
+                                                Search Task
+                                        </button>
+                                        <div>                                                <br>
+                                                <button id="back" class="btn btn-outline-danger">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                                                              </svg>        Back
+                                                </button>   
+                                        </div>
+                                </form>
+                                <div class="d-flex flex-column" id="titleagent"></div>   
+                                        
+                                </div>
+                                <div class="d-flex flex-column" id="tasks2"></div>   
+                                        
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <script>
+                // BACK button
+                back.addEventListener("click", (e) => {
+                        window.history.back()
+                });
+
+
+                //getting URL parameters
+                const queryStrings = window.location.search;
+                const urlParams = new URLSearchParams(queryStrings);
+                const firstName = urlParams.get("first_name");
+                const lastName = urlParams.get("last_name");
+                const date = urlParams.get("date");
+                const gender = urlParams.get("gender");
+                const nickname = urlParams.get("nickname");
+                const password = urlParams.get("password");
+                const manager_name = urlParams.get("manager_name");
+                const typeUser = urlParams.get("typeUser");
+
+                //getting managers
+                getManagers();                  
+                        function getManagers() {
+                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                                managers.innerHTML = "";
+                                                data.forEach((manager) => {
+                                                        if (manager.nickname !=''){
+                                                                let nameoption = document.createElement("option");
+                                                                nameoption.innerText =  manager.first_name + " " + manager.last_name;
+                                                                nameoption.value = manager.nickname;
+                                                                managers.appendChild(nameoption)
+                                                        }
+                                                });
+                                        })
+                                        .catch((error) => console.error(error));
+                        }
+                        getManagers();
+
+                //Search
+                let taskForm = document.getElementById("taskForm");
+                let status = document.getElementById("status");
+                let taskFecha = document.getElementById("taskFecha");
+                let searchButton = document.getElementById("searchButton");
+                let taskFecha2 = document.getElementById("taskFecha2");
+
+                taskForm.addEventListener("submit", (e) => {
+                        e.preventDefault();
+                });
+                searchButton.addEventListener("click", (e) => {
+                        let contador = 0;
+                        if (status.value !='' && taskFecha.value !='' && taskFecha2.value !='' && managers.value!='' ){
+                        titleagent.innerHTML = "";
+                        let titulo = document.createElement("h4");
+                        titleagent.appendChild(titulo)
+
+                        fetch("https://icontaskmanager.pagekite.me:443/task")
+                                .then((response) => response.json())
+                                .then((data) => {
+                                                alert("Search completed");
+                                                tasks2.innerHTML = "";
+                                                data.forEach((task) => {
+                                                if (task.estado == status.value && taskFecha.value<=task.date && task.date<=taskFecha2.value && task.worker_nickname == managers.value){
+                                                        contador++;
+                                                        getManagers2(); 
+                                                        function getManagers2() {
+                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                                data.forEach((manager) => {
+                                                        if (manager.nickname == managers.value ){
+                                                                titulo.innerText =  "Tasks "+ status.value + " for Manager: " + manager.first_name + " " + manager.last_name + " | " + "Tasks "+ status.value + ": " + contador;
+                                                        }
+                                                });
+                                        })
+                                        .catch((error) => console.error(error));
+                        }                                                        
+                                                        let card2 = document.createElement("div");
+                                                        card2.className = "card m-2";
+                                                        card2.id = task.manager_name;
+                                                        let cardBody2 = document.createElement("div");
+                                                        cardBody2.className = "card-body";
+                                                        let estadoTask = document.createElement("h5");
+                                                        estadoTask.className = "card-title";
+                                                        if (task.estado == 'Pending'){
+                                                                cardBody2.style.backgroundColor = "#ffffbf"
+                                                        }else if(task.estado == 'In Progress'){
+                                                                cardBody2.style.backgroundColor = "#e69138"    
+                                                        }else if(task.estado == 'Completed'){ 
+                                                                cardBody2.style.backgroundColor = "#8fce00"    
+                                                        } else if(task.estado == 'Out Of Date'){   
+                                                                cardBody2.style.backgroundColor = "#f44336"  
+                                                        } 
+                                                        estadoTask.innerText = "Status: " + task.estado;
+                                                        let timeinTask = document.createElement("h5");
+                                                        timeinTask.className = "card-subtitle";
+                                                        timeinTask.innerText = "Time In Task: " + task.timein;
+                                                        let timeoutTask = document.createElement("h5");
+                                                        timeoutTask.innerText = "Time Out Task: " + task.timeout;
+                                                        let fechaTask = document.createElement("h5");
+                                                        fechaTask.innerText = "Task Date: " + task.date;
+                                                        let fecha2Task = document.createElement("h5");
+                                                        fecha2Task.innerText = "Task Out of Date: " + task.outofdate;
+                                                        let motivoTask = document.createElement("h5");
+                                                        motivoTask.innerText = "Task Details: " + task.details;
+                                                        let notaTask = document.createElement("h5");
+                                                        notaTask.innerText = "Agent Note: " + task.note;
+                                                        cardBody2.appendChild(estadoTask);
+                                                        cardBody2.appendChild(timeinTask);
+                                                        cardBody2.appendChild(timeoutTask);
+                                                        cardBody2.appendChild(fechaTask);
+                                                        cardBody2.appendChild(fecha2Task);
+                                                        cardBody2.appendChild(motivoTask);
+                                                        cardBody2.appendChild(notaTask);
+                                                        card2.appendChild(cardBody2);
+                                                        tasks2.appendChild(card2);
+                                                        
+                                                        }else {
+                                                                titleagent.innerHTML = "";
+                                                                titleagent.appendChild(titulo)
+                                                                titulo.innerText =  "No Tasks Found ";
+                                                                titulo.style.textAlign = 'center';
+                                                        }
+                                                });
+                                })
+                                .catch((error) => console.error(error));
+                        }else {
+                                alert("Fill all the information to search your task");
+                        }
+                        
+                });
+
+                // funcion para llamar la hora
+                function showTime(){
+                var now=new Date();
+                var seconds = now.getSeconds();
+                var minutes = now.getMinutes();
+                var hour = now.getHours();
+                document.getElementById('time').innerHTML = hour + ":" + minutes + ":" + seconds;
+    }
+        </script>
+        <script
+                src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                crossorigin="anonymous"
+        ></script>
+        <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                crossorigin="anonymous"
+        ></script>
+        <script
+                src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"
+        ></script>
+</body>
+</html>

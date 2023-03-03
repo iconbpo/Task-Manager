@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+                <meta charset="UTF-8" />
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>ICON BPO Task Manager </title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        </head>
+        <body>
+                <nav class="navbar" style="background-color: #a8fc0d;">
+                        <a class="navbar-brand" href="index.html">
+                                <img
+                                        src="./assets/icon logo.png"
+                                        width="30"
+                                        height="30"
+                                        class="d-inline-block align-top"
+                                        alt=""
+                                />
+                                Home:
+                        </a>
+                        <a class="navbar-brand mb-1">ICON BPO Task Manager</a>
+                        <a class="navbar-brand mb-1" href="info.html">Information:</a>
+                </nav>
+                <div class="container">
+                        <div class="row">
+                                <div class="col">
+                                        <h1 class="text-center mb-5">Profile Settings</h1>
+                                        <form id="modificarForm">
+                                                <div class="form-group">
+                                                        <label for="modificarFirstName">First name</label>
+                                                        <input
+                                                                type="text"
+                                                                class="form-control"
+                                                                id="modificarFirstName"
+                                                                placeholder="Enter your first name"
+                                                        />
+                                                </div>
+                                                <div class="form-group">
+                                                        <label for="modificarLastName">Last Name</label>
+                                                        <input
+                                                                type="text"
+                                                                class="form-control"
+                                                                id="modificarLastName"
+                                                                placeholder="Enter your last name"
+                                                        />
+                                                </div>
+                                                <div class="form-group">
+                                                        <label for="modificarBornDate">Born Date</label>
+                                                        <input
+                                                                type="date"
+                                                                class="form-control"
+                                                                id="modificarBornDate"
+                                                                placeholder="Enter your born date"
+                                                        />
+                                                </div>
+                                                <div class="form-group">
+                                                        <label for="modificarPassword">Password</label>
+                                                        <input
+                                                                type="password"
+                                                                class="form-control"
+                                                                id="modificarPassword"
+                                                                placeholder="Enter a password"
+                                                        />
+                                                </div>
+                                                <br>
+                                                <button
+                                                        id="modificarButton"
+                                                        type="submit"
+                                                        class="btn btn-primary w-100"
+                                                >
+                                                        Edit
+                                                </button>
+                                        </form>
+                                </div>
+                        </div>
+                </div>
+                <script>
+                        //getting URL parameters
+                        const queryStrings = window.location.search;
+                        const urlParams = new URLSearchParams(queryStrings);
+                        const firstName = urlParams.get("first_name");
+                        const lastName = urlParams.get("last_name");
+                        const date = urlParams.get("date");
+                        const gender = urlParams.get("gender");
+                        const nickname = urlParams.get("nickname");
+                        const password = urlParams.get("password");
+                        const manager_name =urlParams.get('manager_name')
+                        const typeUser = urlParams.get("typeUser");
+
+                        //Modificar
+                        let modificarForm = document.getElementById("modificarForm");
+                        let modificarFirstName = document.getElementById("modificarFirstName");
+                        let modificarLastName = document.getElementById("modificarLastName");
+                        let modificarBornDate = document.getElementById("modificarBornDate");
+                        let modificarPassword = document.getElementById("modificarPassword");
+                        let modificarButton = document.getElementById("modificarButton");
+                        modificarForm.addEventListener("submit", (e) => {
+                                e.preventDefault();
+                        });
+                        modificarButton.addEventListener("click", (e) => {
+                                if (modificarFirstName.value != '' && modificarLastName.value != '' && modificarBornDate.value != '' && modificarPassword.value!= ''){
+                                        const modifyWorker = {
+                                        first_name: modificarFirstName.value,
+                                        last_name: modificarLastName.value,
+                                        date: modificarBornDate.value,
+                                        gender: gender,
+                                        nickname: nickname,
+                                        password: modificarPassword.value,
+                                        manager_name: manager_name,
+                                        typeUser: 1,
+                                };
+                                console.log(modifyWorker);
+                                fetch("https://icontaskmanager.pagekite.me:443/worker", {
+                                        method: "PUT",
+                                        headers: {
+                                                "content-type": "application/json",
+                                        },
+                                        body: JSON.stringify(modifyWorker),
+                                })
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                                if (data.message) {
+                                                        alert("Profile changed");
+                                                        window.location = "admin.html?first_name=TECH&last_name=ADMIN&date=01/12/1996&gender=m&nickname=admin&password=ALL3V14T3!7410&typeUser=3?";
+                                                } else {
+                                                        console.error(data);
+                                                        alert("Nickname Repetido");
+                                                }
+                                        })
+                                        .catch((error) => console.error(error));
+                                } else {
+                                        alert("Fill all the information in order to modify profile.");
+                                }
+
+                        });
+                </script>
+                <script
+                        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                        crossorigin="anonymous"
+                ></script>
+                <script
+                        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                        crossorigin="anonymous"
+                ></script>
+                <script
+                        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                        crossorigin="anonymous"
+                ></script>
+        </body>
+</html>

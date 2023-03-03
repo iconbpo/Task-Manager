@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+                <meta charset="UTF-8" />
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>ICON BPO Task Manager </title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        </head>
+        <body>
+                <nav class="navbar" style="background-color: #fc0d0d;">
+                        <a class="navbar-brand" href="index.html">
+                                <img
+                                        src="./assets/icon logo.png"
+                                        width="30"
+                                        height="30"
+                                        class="d-inline-block align-top"
+                                        alt=""
+                                />
+                                Home:
+                        </a>
+                        <a class="navbar-brand mb-1">ICON BPO Task Manager</a>
+                        <a class="navbar-brand mb-1" href="info.html">Information:</a>
+                </nav>
+                <div class="container">
+                        <h1>Admin Dashboard</h1>
+                        <p id="currentUser"></p>
+                        <button id="crearWorker" class="btn btn-secondary">
+                                Create Worker
+                        </button>
+                        <button id="crearManager" class="btn btn-warning">
+                                Create Manager
+                        </button>
+                        <button id="crearCEO" class="btn btn-info">
+                                Create CEO
+                        </button>
+                <div class="container">
+                        <h3>Workers</h3>
+                        <div class="m-2">
+                                <span><input type="file" id="workersFileInput" /></span>
+                                <span
+                                        ><button id="loadWorkers" class="btn btn-success">
+                                                Load Workers
+                                        </button></span
+                                >
+                        </div>
+                        <div>
+                                <button id="getReportWorkers" class="btn btn-primary w-100 m-2">
+                                        Generate .pdf report
+                                </button>
+                        </div>
+                        <div class="d-flex flex-column" id="workers"></div>
+                </div>
+                <script>
+                        //getting URL parameters
+                        const queryStrings = window.location.search;
+                        const urlParams = new URLSearchParams(queryStrings);
+                        const firstName = urlParams.get("first_name");
+                        const lastName = urlParams.get("last_name");
+                        const date = urlParams.get("date");
+                        const gender = urlParams.get("gender");
+                        const nickname = urlParams.get("nickname");
+                        const password = urlParams.get("password");
+                        const typeUser = urlParams.get("typeUser");
+                        
+                        //Create Worker
+                        let crearWorker = document.getElementById("crearWorker");
+                        crearWorker.addEventListener("click", (e) => {
+                                let params = `first_name=${firstName}`;
+                                params += `&last_name=${lastName}`;
+                                params += `&date=${date}`;
+                                params += `&gender=${gender}`;
+                                params += `&nickname=${nickname}`;
+                                params += `&password=${password}`;
+                                params += `&typeUser=${typeUser}`;
+                                window.location = "crearworker.html?" + params;
+                        });
+
+                        //Create Manager
+                        let crearManager = document.getElementById("crearManager");
+                        crearManager.addEventListener("click", (e) => {
+                                let params = `first_name=${firstName}`;
+                                params += `&last_name=${lastName}`;
+                                params += `&date=${date}`;
+                                params += `&gender=${gender}`;
+                                params += `&nickname=${nickname}`;
+                                params += `&password=${password}`;
+                                params += `&typeUser=${typeUser}`;
+                                window.location = "crearmanager.html?" + params;
+                        });
+
+
+                        //Create CEO
+                        let crearCEO = document.getElementById("crearCEO");
+                        crearCEO.addEventListener("click", (e) => {
+                                let params = `first_name=${firstName}`;
+                                params += `&last_name=${lastName}`;
+                                params += `&date=${date}`;
+                                params += `&gender=${gender}`;
+                                params += `&nickname=${nickname}`;
+                                params += `&password=${password}`;
+                                params += `&typeUser=${typeUser}`;
+                                window.location = "crearCEO.html?" + params;
+                        });
+
+
+                        //getting inputs
+                        let workers = document.getElementById("workers");
+                        let workersFileInput = document.getElementById("workersFileInput");
+                        let loadWorkers = document.getElementById("loadWorkers");
+                        let getReportWorkers = document.getElementById("getReportWorkers");
+ 
+                        //getting workers
+                        getworkers();
+                        function getworkers() {
+                                fetch("https://icontaskmanager.pagekite.me:443/worker")
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                                workers.innerHTML = "";
+                                                data.forEach((worker) => {
+                                                        let card = document.createElement("div");
+                                                        card.className = "card m-2";
+                                                        card.id = worker.first_name;
+                                                        let cardBody = document.createElement("div");
+                                                        cardBody.className = "card-body";
+                                                        let workerFirstName = document.createElement("h5");
+                                                        workerFirstName.className = "card-title";
+                                                        workerFirstName.innerText = "First Name: " + worker.first_name;
+                                                        let workerLastName = document.createElement("h5");
+                                                        workerLastName.className = "card-subtitle";
+                                                        workerLastName.innerText = "Lastname: " + worker.last_name;
+                                                        let workerGender = document.createElement("h5");
+                                                        workerGender.innerText = "Gender: " + worker.gender;
+                                                        let workerDate = document.createElement("h5");
+                                                        workerDate.innerText = "Born Date: " + worker.date;
+                                                        let workerNickname = document.createElement("h5");
+                                                        workerNickname.innerText = "Nickname: " + worker.nickname;
+                                                        let workerPassword = document.createElement("h5");
+                                                        workerPassword.innerText = "Password: " + worker.password;
+                                                        let workerManager = document.createElement("h5");
+                                                        workerManager.innerText = "Nombre Manager: " + worker.manager_name;
+                                                        let workerDelete = document.createElement("BUTTON");
+                                                        workerDelete.className = "btn btn-danger w-100";
+                                                        workerDelete.innerText = "Delete Worker";
+                                                        workerDelete.addEventListener("click", () => {
+                                                                fetch("https://icontaskmanager.pagekite.me:443/worker?nickname=" + worker.nickname, {
+                                                                        method: "DELETE",
+                                                                })
+                                                                        .then((response) => response.json())
+                                                                        .then((data) => getworkers())
+                                                                        .catch((error) => console.error(error));
+                                                                });
+                                                        let workerModify = document.createElement("BUTTON");
+                                                        workerModify.className = "btn btn-success w-100";
+                                                        workerModify.innerText = "Modify Worker";
+                                                        workerModify.addEventListener("click", () => {
+                                                                let params = `first_name=${worker.first_name}`;
+                                                                params += `&last_name=${worker.last_name}`;
+                                                                params += `&date=${worker.date}`;
+                                                                params += `&gender=${worker.gender}`;
+                                                                params += `&nickname=${worker.nickname}`;
+                                                                params += `&password=${worker.password}`;
+                                                                params += `&manager_name=${worker.manager_name}`;
+                                                                params += `&typeUser=${worker.typeUser}`;
+                                                                window.location = "modificarworkeradmin.html?" + params;
+                                                                });
+                                                        cardBody.appendChild(workerFirstName);
+                                                        cardBody.appendChild(workerLastName);
+                                                        cardBody.appendChild(workerGender);
+                                                        cardBody.appendChild(workerDate);
+                                                        cardBody.appendChild(workerNickname);
+                                                        cardBody.appendChild(workerPassword);
+                                                        cardBody.appendChild(workerManager);
+                                                        cardBody.appendChild(workerDelete);
+                                                        cardBody.appendChild(workerModify);
+                                                        card.appendChild(cardBody);
+                                                        workers.appendChild(card);
+                                                });
+                                        })
+                                        .catch((error) => console.error(error));
+                        }
+ 
+                        //loading workers
+                        loadWorkers.addEventListener("click", () => {
+                                let file = workersFileInput.files[0];
+                                let reader = new FileReader();
+                                reader.readAsText(file);
+                                reader.onload = () => {
+                                        let data = reader.result;
+                                        let workers = data.split("\n");
+                                        workers = workers.splice(1, workers.length - 1);
+                                        workers.forEach((worker) => {
+                                                if (worker !== "") {
+                                                        let workerData = worker.split(",");
+                                                        const newworker = {
+                                                                first_name: workerData[0],
+                                                                last_name: workerData[1],
+                                                                date: workerData[2],
+                                                                gender: workerData[3],
+                                                                nickname: workerData[4],
+                                                                password: workerData[5],
+                                                                manager_name: workerData[6],
+                                                                typeUser: 1,
+                                                        };
+                                                        console.log(newworker);
+                                                        fetch("https://icontaskmanager.pagekite.me:443/worker", {
+                                                                method: "POST",
+                                                                headers: {
+                                                                        "content-type": "application/json",
+                                                                },
+                                                                body: JSON.stringify(newworker),
+                                                        })
+                                                                .then((response) => response.json())
+                                                                .then((data) => getworkers())
+                                                                .catch((error) => console.error(error));
+                                                }
+                                        });
+                                };
+                                reader.onerror = () => console.error(reader.error);
+                        });
+ 
+                        //generate pdf report
+                        getReportWorkers.addEventListener("click", () => {
+                                window.open("https://icontaskmanager.pagekite.me:443/reports/worker");
+                        });
+                </script>
+                <div class="container">
+                        <h3>Managers</h3>
+                        <div class="m-2">
+                                <span><input type="file" id="managerFileInput" /></span>
+                                <span
+                                        ><button id="loadManagers" class="btn btn-success">
+                                                Load Managers
+                                        </button></span
+                                >
+                        </div>
+                        <div>
+                                <button id="getReportManagers" class="btn btn-primary w-100 m-2">
+                                        Generate .pdf report
+                                </button>
+                        </div>
+                        <div class="d-flex flex-column" id="managers"></div>
+                </div>
+                <script>
+                        //getting inputs
+                        let managers = document.getElementById("managers");
+                        let managerFileInput = document.getElementById("managerFileInput");
+                        let loadManagers = document.getElementById("loadManagers");
+                        let getReportManagers = document.getElementById("getReportManagers");
+ 
+                        //getting managers
+                        getmanagers();
+                        function getmanagers() {
+                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                                managers.innerHTML = "";
+                                                data.forEach((manager) => {
+                                                        let card = document.createElement("div");
+                                                        card.className = "card m-2";
+                                                        card.id = manager.first_name;
+                                                        let cardBody = document.createElement("div");
+                                                        cardBody.className = "card-body";
+                                                        let managerFirstName = document.createElement("h5");
+                                                        managerFirstName.className = "card-title";
+                                                        managerFirstName.innerText = "First Name: " + manager.first_name;
+                                                        let managerLastName = document.createElement("h5");
+                                                        managerLastName.className = "card-subtitle";
+                                                        managerLastName.innerText = "Lastname: " + manager.last_name;
+                                                        let managerGender = document.createElement("h5");
+                                                        managerGender.innerText = "Gender: " + manager.gender;
+                                                        let managerDate = document.createElement("h5");
+                                                        managerDate.innerText = "Born Date: " + manager.date;
+                                                        let managerNickname = document.createElement("h5");
+                                                        managerNickname.innerText = "Nickname: " + manager.nickname;
+                                                        let managerPassword = document.createElement("h5");
+                                                        managerPassword.innerText = "Password: " + manager.password;
+                                                        let managerDelete = document.createElement("BUTTON");
+                                                        managerDelete.className = "btn btn-danger w-100";
+                                                        managerDelete.innerText = "Delete manager";
+                                                        managerDelete.addEventListener("click", () => {
+                                                                fetch("https://icontaskmanager.pagekite.me:443/manager?nickname=" + manager.nickname, {
+                                                                        method: "DELETE",
+                                                                })
+                                                                        .then((response) => response.json())
+                                                                        .then((data) => getmanagers())
+                                                                        .catch((error) => console.error(error));
+                                                        });
+                                                        let managerModify = document.createElement("BUTTON");
+                                                        managerModify.className = "btn btn-success w-100";
+                                                        managerModify.innerText = "Modify manager";
+                                                        managerModify.addEventListener("click", () => {
+                                                                let params = `first_name=${manager.first_name}`;
+                                                                params += `&last_name=${manager.last_name}`;
+                                                                params += `&date=${manager.date}`;
+                                                                params += `&gender=${manager.gender}`;
+                                                                params += `&nickname=${manager.nickname}`;
+                                                                params += `&password=${manager.password}`;
+                                                                params += `&manager_name=${manager.manager_name}`;
+                                                                params += `&typeUser=${manager.typeUser}`;
+                                                                window.location = "modificarmanageradmin.html?" + params;
+                                                                });
+                                                        cardBody.appendChild(managerFirstName);
+                                                        cardBody.appendChild(managerLastName);
+                                                        cardBody.appendChild(managerGender);
+                                                        cardBody.appendChild(managerDate);
+                                                        cardBody.appendChild(managerNickname);
+                                                        cardBody.appendChild(managerPassword);
+                                                        cardBody.appendChild(managerDelete);
+                                                        cardBody.appendChild(managerModify);
+                                                        card.appendChild(cardBody);
+                                                        managers.appendChild(card);
+                                                });
+                                        })
+                                        .catch((error) => console.error(error));
+                        }
+ 
+                        //loading managers
+                        loadManagers.addEventListener("click", () => {
+                                let file = managerFileInput.files[0];
+                                let reader = new FileReader();
+                                reader.readAsText(file);
+                                reader.onload = () => {
+                                        let data = reader.result;
+                                        let managers = data.split("\n");
+                                        managers = managers.splice(1, managers.length - 1);
+                                        managers.forEach((manager) => {
+                                                if (manager !== "") {
+                                                        let managerData = manager.split(",");
+                                                        const newmanager = {
+                                                                first_name: managerData[0],
+                                                                last_name: managerData[1],
+                                                                date: managerData[2],
+                                                                gender: managerData[3],
+                                                                nickname: managerData[4],
+                                                                password: managerData[5],
+                                                                manager_name: managerData[6].replace('\r', ''),
+                                                                typeUser: 2,
+                                                        };
+                                                        console.log(newmanager);
+                                                        fetch("https://icontaskmanager.pagekite.me:443/manager", {
+                                                                method: "POST",
+                                                                headers: {
+                                                                        "content-type": "application/json",
+                                                                },
+                                                                body: JSON.stringify(newmanager),
+                                                        })
+                                                                .then((response) => response.json())
+                                                                .then((data) => getmanagers())
+                                                                .catch((error) => console.error(error));
+                                                }
+                                        });
+                                };
+                                reader.onerror = () => console.error(reader.error);
+                        });
+ 
+                        //generate pdf report
+                        getReportManagers.addEventListener("click", () => {
+                                window.open("https://icontaskmanager.pagekite.me:443/reports/manager");
+                        });
+                </script>
+
+<div class="container">
+        <h3>ceos</h3>
+        <div class="m-2">
+                <span><input type="file" id="ceoFileInput" /></span>
+                <span
+                        ><button id="loadceos" class="btn btn-success">
+                                Load ceos
+                        </button></span
+                >
+        </div>
+        <div>
+                <button id="getReportceos" class="btn btn-primary w-100 m-2">
+                        Generate .pdf report
+                </button>
+        </div>
+        <div class="d-flex flex-column" id="ceos"></div>
+</div>
+<script>
+        //getting inputs
+        let ceos = document.getElementById("ceos");
+        let ceoFileInput = document.getElementById("ceoFileInput");
+        let loadceos = document.getElementById("loadceos");
+        let getReportceos = document.getElementById("getReportceos");
+
+        //getting ceos
+        getceos();
+        function getceos() {
+                fetch("https://icontaskmanager.pagekite.me:443/ceo")
+                        .then((response) => response.json())
+                        .then((data) => {
+                                ceos.innerHTML = "";
+                                data.forEach((ceo) => {
+                                        let card = document.createElement("div");
+                                        card.className = "card m-2";
+                                        card.id = ceo.first_name;
+                                        let cardBody = document.createElement("div");
+                                        cardBody.className = "card-body";
+                                        let ceoFirstName = document.createElement("h5");
+                                        ceoFirstName.className = "card-title";
+                                        ceoFirstName.innerText = "First Name: " + ceo.first_name;
+                                        let ceoLastName = document.createElement("h5");
+                                        ceoLastName.className = "card-subtitle";
+                                        ceoLastName.innerText = "Lastname: " + ceo.last_name;
+                                        let ceoGender = document.createElement("h5");
+                                        ceoGender.innerText = "Gender: " + ceo.gender;
+                                        let ceoDate = document.createElement("h5");
+                                        ceoDate.innerText = "Born Date: " + ceo.date;
+                                        let ceoNickname = document.createElement("h5");
+                                        ceoNickname.innerText = "Nickname: " + ceo.nickname;
+                                        let ceoPassword = document.createElement("h5");
+                                        ceoPassword.innerText = "Password: " + ceo.password;
+                                        let ceoDelete = document.createElement("BUTTON");
+                                        ceoDelete.className = "btn btn-danger w-100";
+                                        ceoDelete.innerText = "Delete ceo";
+                                        ceoDelete.addEventListener("click", () => {
+                                                fetch("https://icontaskmanager.pagekite.me:443/ceo?nickname=" + ceo.nickname, {
+                                                        method: "DELETE",
+                                                })
+                                                        .then((response) => response.json())
+                                                        .then((data) => getceos())
+                                                        .catch((error) => console.error(error));
+                                        });
+                                        let ceoModify = document.createElement("BUTTON");
+                                        ceoModify.className = "btn btn-success w-100";
+                                        ceoModify.innerText = "Modify ceo";
+                                        ceoModify.addEventListener("click", () => {
+                                                let params = `first_name=${ceo.first_name}`;
+                                                params += `&last_name=${ceo.last_name}`;
+                                                params += `&date=${ceo.date}`;
+                                                params += `&gender=${ceo.gender}`;
+                                                params += `&nickname=${ceo.nickname}`;
+                                                params += `&password=${ceo.password}`;
+                                                params += `&typeUser=${ceo.typeUser}`;
+                                                window.location = "modificarCEOadmin.html?" + params;
+                                                });
+                                        cardBody.appendChild(ceoFirstName);
+                                        cardBody.appendChild(ceoLastName);
+                                        cardBody.appendChild(ceoGender);
+                                        cardBody.appendChild(ceoDate);
+                                        cardBody.appendChild(ceoNickname);
+                                        cardBody.appendChild(ceoPassword);
+                                        cardBody.appendChild(ceoDelete);
+                                        cardBody.appendChild(ceoModify);
+                                        card.appendChild(cardBody);
+                                        ceos.appendChild(card);
+                                });
+                        })
+                        .catch((error) => console.error(error));
+        }
+
+        //loading ceos
+        loadceos.addEventListener("click", () => {
+                let file = ceoFileInput.files[0];
+                let reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = () => {
+                        let data = reader.result;
+                        let ceos = data.split("\n");
+                        ceos = ceos.splice(1, ceos.length - 1);
+                        ceos.forEach((ceo) => {
+                                if (ceo !== "") {
+                                        let ceoData = ceo.split(",");
+                                        const newceo = {
+                                                first_name: ceoData[0],
+                                                last_name: ceoData[1],
+                                                date: ceoData[2],
+                                                gender: ceoData[3],
+                                                nickname: ceoData[4],
+                                                password: ceoData[5].replace('\r', ''),
+                                                typeUser: 4,
+                                        };
+                                        console.log(newceo);
+                                        fetch("https://icontaskmanager.pagekite.me:443/ceo", {
+                                                method: "POST",
+                                                headers: {
+                                                        "content-type": "application/json",
+                                                },
+                                                body: JSON.stringify(newceo),
+                                        })
+                                                .then((response) => response.json())
+                                                .then((data) => getceos())
+                                                .catch((error) => console.error(error));
+                                }
+                        });
+                };
+                reader.onerror = () => console.error(reader.error);
+        });
+
+</script>
+
+<div class="container">
+        <h3>TASKS:</h3>
+        <div class="m-2">
+
+        <div>
+                <button id="getReportTasks" class="btn btn-primary w-100 m-2">
+                        Generate .pdf report
+                </button>
+        </div>
+        <div class="m-2">
+                <span><input type="file" id="tasksFileInput" /></span>
+                <span><button id="loadtasks" class="btn btn-success">
+                                Load Backup Tasks 
+                </button></span>
+                <span><button id="backup" class="btn btn-info">
+                         Backup
+                </button></span>
+        </div>
+        <div class="d-flex flex-column" id="tasks"></div>
+</div>
+<script>
+                                //getting inputs
+                                let taks = document.getElementById("tasks");
+                                let tasksFileInput = document.getElementById("tasksFileInput");
+                                let loadtasks = document.getElementById("loadtasks");
+                                let backup = document.getElementById("backup");
+
+                                let getReportTasks = document.getElementById("getReportTasks");
+
+                                //generate pdf report
+                                getReportTasks.addEventListener("click", () => {
+                                window.open("https://icontaskmanager.pagekite.me:443/reports/task");
+                        });
+
+                                //loading tasks
+        loadtasks.addEventListener("click", () => {
+                let file = tasksFileInput.files[0];
+                let reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = () => {
+                        let data = reader.result;
+                        let tasks = data.split("\n");
+                        tasks = tasks.splice(1, tasks.length - 1);
+                        tasks.forEach((task) => {
+                                if (task !== "") {
+                                        let taskData = task.split(",");
+                                        const newtask = {
+                                                worker_nickname: taskData[0],
+                                                timein: taskData[1],
+                                                timeout: taskData[2],
+                                                date: taskData[3],
+                                                outofdate: taskData[4],
+                                                details: taskData[5],
+                                                estado: taskData[6],
+                                                manager_name: taskData[7],
+                                                note: taskData[8],
+                                        };
+                                        console.log(newtask);
+                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                method: "POST",
+                                                headers: {
+                                                        "content-type": "application/json",
+                                                },
+                                                body: JSON.stringify(newtask),
+                                        })
+                                                .then((response) => response.json())
+                                                .then((data) => alert("Backup Loaded"))
+                                                .catch((error) => console.error(error));
+                                }
+                        });
+                };
+                reader.onerror = () => console.error(reader.error);
+        });
+
+                                //generate backup 
+                                backup.addEventListener("click", () => {
+                                alert("Backup Created")     
+                                window.open("https://icontaskmanager.pagekite.me:443/backup");
+                                window.location.reload()
+
+                        });
+</script>
+
+
+                <script
+                        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                        crossorigin="anonymous"
+                ></script>
+                <script
+                        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                        crossorigin="anonymous"
+                ></script>
+                <script
+                        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                        crossorigin="anonymous"
+                ></script>
+        </body>
+</html>
