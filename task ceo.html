@@ -109,7 +109,7 @@
                         getmanagers();                  
                         function getmanagers() {
 
-                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                fetch("https://icon-task-manager.onrender.com/manager")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 managers.innerHTML = "";
@@ -143,7 +143,7 @@
                                 note: '',
                         };
                         console.log(newTask);
-                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                        fetch("https://icon-task-manager.onrender.com/task", {
                                 method: "POST",
                                 headers: {
                                         "content-type": "application/json",

@@ -142,7 +142,7 @@
                         getTasks();
                         function getTasks() {
                                 
-                                fetch("https://icontaskmanager.pagekite.me:443/task")
+                                fetch("https://icon-task-manager.onrender.com/task")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 tasks.innerHTML = "";
@@ -174,7 +174,7 @@
                 //getting workers
                 getWorkers2();                  
                         function getWorkers2() {
-                                fetch("https://icontaskmanager.pagekite.me:443/worker")
+                                fetch("https://icon-task-manager.onrender.com/worker")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 data.forEach((worker) => {
@@ -190,7 +190,7 @@
                         }
                         getManagers();                  
                         function getManagers() {
-                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                fetch("https://icon-task-manager.onrender.com/manager")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 data.forEach((manager) => {
@@ -326,7 +326,7 @@
                                                                                 note: '',
                                                                         };
                                                                         console.log(timeinTask);
-                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                        fetch("https://icon-task-manager.onrender.com/task", {
                                                                                 method: "PUT",
                                                                                 headers: {
                                                                                         "content-type": "application/json",
@@ -370,7 +370,7 @@
                                                                                 note: '' ,
                                                                         };
                                                                         console.log(timeoutTask);
-                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                        fetch("https://icon-task-manager.onrender.com/task", {
                                                                                 method: "PUT",
                                                                                 headers: {
                                                                                         "content-type": "application/json",
@@ -412,7 +412,7 @@
                                                                                 note: taskNote.value ,
                                                                         };
                                                                         console.log(completedTask);
-                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                        fetch("https://icon-task-manager.onrender.com/task", {
                                                                                 method: "PUT",
                                                                                 headers: {
                                                                                         "content-type": "application/json",

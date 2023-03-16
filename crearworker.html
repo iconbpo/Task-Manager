@@ -114,7 +114,7 @@
                         getmanagers();                  
                         function getmanagers() {
 
-                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                fetch("https://icon-task-manager.onrender.com/manager")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 managers.innerHTML = "";
@@ -157,7 +157,7 @@
                                         typeUser: 1,
                                 };
                                 console.log(createWorker);
-                                fetch("https://icontaskmanager.pagekite.me:443/worker", {
+                                fetch("https://icon-task-manager.onrender.com/worker", {
                                         method: "POST",
                                         headers: {
                                                 "content-type": "application/json",

@@ -417,4 +417,4 @@ def task():
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=3000)
+    app.run(host='localhost', port=3000 , ssl_context='adhoc')

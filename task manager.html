@@ -108,7 +108,7 @@
                         //getting workers
                         getWorkers();                  
                         function getWorkers() {
-                                fetch("https://icontaskmanager.pagekite.me:443/worker")
+                                fetch("https://icon-task-manager.onrender.com/worker")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 workers.innerHTML = "";
@@ -129,7 +129,7 @@
                         //getting Managers
                         getManagers();                  
                         function getManagers() {
-                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                fetch("https://icon-task-manager.onrender.com/manager")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 data.forEach((manager) => {
@@ -163,7 +163,7 @@
                                 note: '',
                         };
                         console.log(newTask);
-                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                        fetch("https://icon-task-manager.onrender.com/task", {
                                 method: "POST",
                                 headers: {
                                         "content-type": "application/json",

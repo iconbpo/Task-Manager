@@ -106,7 +106,7 @@
                 //getting managers
                 getManagers();                  
                         function getManagers() {
-                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                fetch("https://icon-task-manager.onrender.com/manager")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 managers.innerHTML = "";
@@ -140,7 +140,7 @@
                         let titulo = document.createElement("h4");
                         titleagent.appendChild(titulo)
 
-                        fetch("https://icontaskmanager.pagekite.me:443/task")
+                        fetch("https://icon-task-manager.onrender.com/task")
                                 .then((response) => response.json())
                                 .then((data) => {
                                                 alert("Search completed");
@@ -150,7 +150,7 @@
                                                         contador++;
                                                         getManagers2(); 
                                                         function getManagers2() {
-                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                fetch("https://icon-task-manager.onrender.com/manager")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 data.forEach((manager) => {

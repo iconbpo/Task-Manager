@@ -106,7 +106,7 @@
                 //getting workers
                 getWorkers();                  
                         function getWorkers() {
-                                fetch("https://icontaskmanager.pagekite.me:443/worker")
+                                fetch("https://icon-task-manager.onrender.com/worker")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 workers.innerHTML = "";
@@ -139,7 +139,7 @@
                         titleagent.innerHTML = "";
                         let titulo = document.createElement("h4");
                         titleagent.appendChild(titulo)
-                        fetch("https://icontaskmanager.pagekite.me:443/task")
+                        fetch("https://icon-task-manager.onrender.com/task")
                                 .then((response) => response.json())
                                 .then((data) => {
                                                 alert("Search completed");
@@ -149,7 +149,7 @@
                                                         contador++;
                                                         getWorkers2(); 
                                                         function getWorkers2() {
-                                fetch("https://icontaskmanager.pagekite.me:443/worker")
+                                fetch("https://icon-task-manager.onrender.com/worker")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 data.forEach((worker) => {

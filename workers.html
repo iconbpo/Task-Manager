@@ -130,7 +130,7 @@
                         getTasks();
                         function getTasks() {
                                 
-                                fetch("https://icontaskmanager.pagekite.me:443/task")
+                                fetch("https://icon-task-manager.onrender.com/task")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 tasks.innerHTML = "";
@@ -224,7 +224,7 @@
                                                                                 note: '',
                                                                         };
                                                                         console.log(timeinTask);
-                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                        fetch("https://icon-task-manager.onrender.com/task", {
                                                                                 method: "PUT",
                                                                                 headers: {
                                                                                         "content-type": "application/json",
@@ -268,7 +268,7 @@
                                                                                 note: '' ,
                                                                         };
                                                                         console.log(timeoutTask);
-                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                        fetch("https://icon-task-manager.onrender.com/task", {
                                                                                 method: "PUT",
                                                                                 headers: {
                                                                                         "content-type": "application/json",
@@ -312,7 +312,7 @@
                                                                                 note: taskNote.value,
                                                                         };
                                                                         console.log(outofdateTask);
-                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                        fetch("https://icon-task-manager.onrender.com/task", {
                                                                                 method: "PUT",
                                                                                 headers: {
                                                                                         "content-type": "application/json",
@@ -354,7 +354,7 @@
                                                                                 note: taskNote.value ,
                                                                         };
                                                                         console.log(completedTask);
-                                                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                                                        fetch("https://icon-task-manager.onrender.com/task", {
                                                                                 method: "PUT",
                                                                                 headers: {
                                                                                         "content-type": "application/json",

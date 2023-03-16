@@ -104,7 +104,7 @@
                 //getting workers
                 getWorkers();                  
                         function getWorkers() {
-                                fetch("https://icontaskmanager.pagekite.me:443/worker")
+                                fetch("https://icon-task-manager.onrender.com/worker")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 workers.innerHTML = "";
@@ -123,7 +123,7 @@
                         //getting Managers
                         getManagers();                  
                         function getManagers() {
-                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                fetch("https://icon-task-manager.onrender.com/manager")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 data.forEach((manager) => {
@@ -158,7 +158,7 @@
                  //getting workers2
                                  
                         function getWorkers2() {
-                                fetch("https://icontaskmanager.pagekite.me:443/worker")
+                                fetch("https://icon-task-manager.onrender.com/worker")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 titleagent.innerHTML = "";
@@ -173,7 +173,7 @@
                         }
 
                         function getManagers2() {
-                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                fetch("https://icon-task-manager.onrender.com/manager")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 data.forEach((manager) => {
@@ -189,7 +189,7 @@
 
 
 
-                        fetch("https://icontaskmanager.pagekite.me:443/task")
+                        fetch("https://icon-task-manager.onrender.com/task")
                                 .then((response) => response.json())
                                 .then((data) => {
                                                 alert("Search completed");

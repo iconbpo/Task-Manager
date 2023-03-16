@@ -113,7 +113,7 @@
                         //getting workers
                         getworkers();
                         function getworkers() {
-                                fetch("https://icontaskmanager.pagekite.me:443/worker")
+                                fetch("https://icon-task-manager.onrender.com/worker")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 workers.innerHTML = "";
@@ -143,7 +143,7 @@
                                                         workerDelete.className = "btn btn-danger w-100";
                                                         workerDelete.innerText = "Delete Worker";
                                                         workerDelete.addEventListener("click", () => {
-                                                                fetch("https://icontaskmanager.pagekite.me:443/worker?nickname=" + worker.nickname, {
+                                                                fetch("https://icon-task-manager.onrender.com/worker?nickname=" + worker.nickname, {
                                                                         method: "DELETE",
                                                                 })
                                                                         .then((response) => response.json())
@@ -203,7 +203,7 @@
                                                                 typeUser: 1,
                                                         };
                                                         console.log(newworker);
-                                                        fetch("https://icontaskmanager.pagekite.me:443/worker", {
+                                                        fetch("https://icon-task-manager.onrender.com/worker", {
                                                                 method: "POST",
                                                                 headers: {
                                                                         "content-type": "application/json",
@@ -221,7 +221,7 @@
  
                         //generate pdf report
                         getReportWorkers.addEventListener("click", () => {
-                                window.open("https://icontaskmanager.pagekite.me:443/reports/worker");
+                                window.open("https://icon-task-manager.onrender.com/reports/worker");
                         });
                 </script>
                 <div class="container">
@@ -251,7 +251,7 @@
                         //getting managers
                         getmanagers();
                         function getmanagers() {
-                                fetch("https://icontaskmanager.pagekite.me:443/manager")
+                                fetch("https://icon-task-manager.onrender.com/manager")
                                         .then((response) => response.json())
                                         .then((data) => {
                                                 managers.innerHTML = "";
@@ -279,7 +279,7 @@
                                                         managerDelete.className = "btn btn-danger w-100";
                                                         managerDelete.innerText = "Delete manager";
                                                         managerDelete.addEventListener("click", () => {
-                                                                fetch("https://icontaskmanager.pagekite.me:443/manager?nickname=" + manager.nickname, {
+                                                                fetch("https://icon-task-manager.onrender.com/manager?nickname=" + manager.nickname, {
                                                                         method: "DELETE",
                                                                 })
                                                                         .then((response) => response.json())
@@ -338,7 +338,7 @@
                                                                 typeUser: 2,
                                                         };
                                                         console.log(newmanager);
-                                                        fetch("https://icontaskmanager.pagekite.me:443/manager", {
+                                                        fetch("https://icon-task-manager.onrender.com/manager", {
                                                                 method: "POST",
                                                                 headers: {
                                                                         "content-type": "application/json",
@@ -356,7 +356,7 @@
  
                         //generate pdf report
                         getReportManagers.addEventListener("click", () => {
-                                window.open("https://icontaskmanager.pagekite.me:443/reports/manager");
+                                window.open("https://icon-task-manager.onrender.com/reports/manager");
                         });
                 </script>
 
@@ -387,7 +387,7 @@
         //getting ceos
         getceos();
         function getceos() {
-                fetch("https://icontaskmanager.pagekite.me:443/ceo")
+                fetch("https://icon-task-manager.onrender.com/ceo")
                         .then((response) => response.json())
                         .then((data) => {
                                 ceos.innerHTML = "";
@@ -415,7 +415,7 @@
                                         ceoDelete.className = "btn btn-danger w-100";
                                         ceoDelete.innerText = "Delete ceo";
                                         ceoDelete.addEventListener("click", () => {
-                                                fetch("https://icontaskmanager.pagekite.me:443/ceo?nickname=" + ceo.nickname, {
+                                                fetch("https://icon-task-manager.onrender.com/ceo?nickname=" + ceo.nickname, {
                                                         method: "DELETE",
                                                 })
                                                         .then((response) => response.json())
@@ -472,7 +472,7 @@
                                                 typeUser: 4,
                                         };
                                         console.log(newceo);
-                                        fetch("https://icontaskmanager.pagekite.me:443/ceo", {
+                                        fetch("https://icon-task-manager.onrender.com/ceo", {
                                                 method: "POST",
                                                 headers: {
                                                         "content-type": "application/json",
@@ -521,7 +521,7 @@
 
                                 //generate pdf report
                                 getReportTasks.addEventListener("click", () => {
-                                window.open("https://icontaskmanager.pagekite.me:443/reports/task");
+                                window.open("https://icon-task-manager.onrender.com/reports/task");
                         });
 
                                 //loading tasks
@@ -548,7 +548,7 @@
                                                 note: taskData[8],
                                         };
                                         console.log(newtask);
-                                        fetch("https://icontaskmanager.pagekite.me:443/task", {
+                                        fetch("https://icon-task-manager.onrender.com/task", {
                                                 method: "POST",
                                                 headers: {
                                                         "content-type": "application/json",
@@ -567,7 +567,7 @@
                                 //generate backup 
                                 backup.addEventListener("click", () => {
                                 alert("Backup Created")     
-                                window.open("https://icontaskmanager.pagekite.me:443/backup");
+                                window.open("https://icon-task-manager.onrender.com/backup");
                                 window.location.reload()
 
                         });
