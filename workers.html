@@ -168,6 +168,7 @@
                                                         let cardBody2 = document.createElement("div");
                                                         let taskNote = document.createElement("INPUT");
                                                         taskNote.placeholder ='Please insert your note:'
+                                                        taskNote.size = "100";
                                                         let taskCompleted = document.createElement("BUTTON");
                                                         taskCompleted.className = "btn btn-success";
                                                         taskCompleted.innerText = "Complete TASK:"
@@ -177,8 +178,8 @@
                                                         cardBody.appendChild(taskMotivo);
                                                         cardBody.appendChild(timein);
                                                         cardBody.appendChild(timeout);
-                                                        cardBody2.appendChild(taskCompleted);
                                                         cardBody2.appendChild(taskNote);
+                                                        cardBody2.appendChild(taskCompleted);
                                                         card.appendChild(cardBody);
                                                         card.appendChild(cardBody2);
                                                         tasks.appendChild(card);
