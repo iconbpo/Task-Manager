@@ -166,13 +166,15 @@
                                                         timeout.disabled = true;
                                                         
                                                         let cardBody2 = document.createElement("div");
-                                                        let taskNote = document.createElement("TEXTAREA");
+                                                        let taskNote = document.createElement("TEXT");
                                                         taskNote.setAttribute('cols', 25);
                                                         taskNote.setAttribute('rows', 12);
+                                                        taskNote.setAttribute('align', 'center');
                                                         taskNote.placeholder ='Please insert your note before to TIMEOUT your task'
                                                         let taskCompleted = document.createElement("BUTTON");
                                                         taskCompleted.className = "btn btn-success";
                                                         taskCompleted.innerText = "Complete TASK:"
+                                                        taskCompleted.setAttribute('align', 'center');
                                                         cardBody.appendChild(taskEstado);
                                                         cardBody.appendChild(taskFecha);
                                                         cardBody.appendChild(taskFecha2);
